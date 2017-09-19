@@ -41,14 +41,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 class VisitController {
 
-    private final VisitRepository visits;
-    private final PetRepository pets;
+    private final VisitRepository visits;   
+    public PetService petService;
 
 
     @Autowired
-    public VisitController(VisitRepository visits, PetRepository pets) {
+    public VisitController(VisitRepository visits, PetService petService) {
         this.visits = visits;
-        this.pets = pets;
+        this.petService = petService;
     }
 
     @InitBinder
@@ -68,7 +68,7 @@ class VisitController {
      */
     @ModelAttribute("visit")
     public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-        Pet pet = this.pets.findById(petId);
+        Pet pet = this.petService.findById(petId);
         model.put("pet", pet);
         Visit visit = new Visit();
         pet.addVisit(visit);
